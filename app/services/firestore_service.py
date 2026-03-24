@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Optional, Dict
 from app.config.firebase import get_db
+from app.config.firebase_schema import validate_firestore_document
 from app.utils.logger import logger
 import uuid
 
@@ -11,7 +12,12 @@ class FirestoreService:
     async def store_daily_vitals(self, patient_id: str, vitals_data: dict) -> bool:
         """Store daily vitals in Firestore"""
         try:
-            vitals_data['timestamp'] = datetime.utcnow().isoformat()
+            vitals_data = {
+                **vitals_data,
+                'patientId': patient_id,
+                'timestamp': datetime.utcnow().isoformat()
+            }
+            validate_firestore_document('patientDailyVitals', vitals_data)
             doc_ref = self.db.collection('patients').document(patient_id)\
                 .collection('dailyVitals').document(vitals_data['date'])
             doc_ref.set(vitals_data)
@@ -63,8 +69,13 @@ class FirestoreService:
         """Store emergency alert"""
         try:
             alert_id = str(uuid.uuid4())
-            alert_data['timestamp'] = datetime.utcnow().isoformat()
-            alert_data['status'] = 'active'
+            alert_data = {
+                **alert_data,
+                'patientId': patient_id,
+                'timestamp': datetime.utcnow().isoformat(),
+                'status': 'active'
+            }
+            validate_firestore_document('patientAlerts', alert_data)
             
             doc_ref = self.db.collection('patients').document(patient_id)\
                 .collection('alerts').document(alert_id)
@@ -99,6 +110,7 @@ class FirestoreService:
     async def update_alert_status(self, patient_id: str, alert_id: str, status: str) -> bool:
         """Update alert status"""
         try:
+            validate_firestore_document('patientAlerts', {'status': status}, partial=True)
             doc_ref = self.db.collection('patients').document(patient_id)\
                 .collection('alerts').document(alert_id)
             

@@ -16,7 +16,7 @@ from app.utils.communication_helpers import format_emergency_message
 from app.utils.logger import logger
 
 
-router = APIRouter(tags=["Communication"])
+router = APIRouter(prefix="/api/v1/communication", tags=["Communication"])
 
 
 def _count_failed(results: list[TwilioActionResult]) -> int:
@@ -24,7 +24,6 @@ def _count_failed(results: list[TwilioActionResult]) -> int:
 
 
 @router.post("/sms", response_model=BatchResponse)
-@router.post("/api/v1/communication/sms", response_model=BatchResponse)
 def send_sms(
     payload: SMSRequest,
     twilio_service: TwilioService = Depends(get_twilio_service),
@@ -52,7 +51,6 @@ def send_sms(
 
 
 @router.post("/call", response_model=BatchResponse)
-@router.post("/api/v1/communication/call", response_model=BatchResponse)
 def make_calls(
     payload: CallRequest,
     twilio_service: TwilioService = Depends(get_twilio_service),
@@ -83,7 +81,6 @@ def make_calls(
 
 
 @router.post("/sos", response_model=CommunicationSOSResponse)
-@router.post("/api/v1/communication/sos", response_model=CommunicationSOSResponse)
 def send_sos(
     payload: CommunicationSOSRequest,
     twilio_service: TwilioService = Depends(get_twilio_service),

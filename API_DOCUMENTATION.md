@@ -272,7 +272,7 @@ Update alert status (typically to mark as resolved).
 ---
 
 ### 9. Send SMS (Twilio)
-**POST** `/sms` or `/api/v1/communication/sms`
+**POST** `/api/v1/communication/sms`
 
 **Request Body:**
 ```json
@@ -285,7 +285,7 @@ Update alert status (typically to mark as resolved).
 ---
 
 ### 10. Make Call (Twilio)
-**POST** `/call` or `/api/v1/communication/call`
+**POST** `/api/v1/communication/call`
 
 **Request Body:**
 ```json
@@ -298,7 +298,7 @@ Update alert status (typically to mark as resolved).
 ---
 
 ### 11. SOS Notify (Priority-Based Twilio)
-**POST** `/sos` or `/api/v1/communication/sos`
+**POST** `/api/v1/communication/sos`
 
 **Behavior:**
 - `priority=LOW`: SMS only

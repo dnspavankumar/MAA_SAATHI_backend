@@ -184,9 +184,15 @@ Create emergency alert with severity-based actions.
 - `MANUAL_SOS`
 
 **Severity Levels & Actions:**
-- `LOW`: SMS notification
-- `MEDIUM`: SMS + event logging
-- `HIGH`: SMS + emergency call + high priority
+- `LOW`: SMS only
+- `MEDIUM`: SMS + emergency call
+- `HIGH`: SMS + emergency call
+
+**Twilio Contact Fields (optional, but required for real delivery):**
+- `doctorNumber`: single E.164 number (example `+919876543210`)
+- `familyNumbers`: list of E.164 numbers
+- `customMessage`: override auto-generated emergency message
+- `soundUrl`, `voice`, `language`: call voice customization
 
 **Response:**
 ```json
@@ -260,6 +266,53 @@ Update alert status (typically to mark as resolved).
   "message": "Alert uuid-here updated to resolved",
   "alertId": "uuid-here",
   "status": "resolved"
+}
+```
+
+---
+
+### 9. Send SMS (Twilio)
+**POST** `/sms` or `/api/v1/communication/sms`
+
+**Request Body:**
+```json
+{
+  "phone_numbers": ["+919876543210"],
+  "message": "Test SMS from VitalSync."
+}
+```
+
+---
+
+### 10. Make Call (Twilio)
+**POST** `/call` or `/api/v1/communication/call`
+
+**Request Body:**
+```json
+{
+  "phone_numbers": ["+919876543210"],
+  "message": "This is a test call from VitalSync."
+}
+```
+
+---
+
+### 11. SOS Notify (Priority-Based Twilio)
+**POST** `/sos` or `/api/v1/communication/sos`
+
+**Behavior:**
+- `priority=LOW`: SMS only
+- `priority=MEDIUM/HIGH`: SMS + call
+
+**Request Body:**
+```json
+{
+  "patient_name": "John Doe",
+  "location": "28.6139, 77.2090",
+  "emergency_type": "FALL",
+  "priority": "MEDIUM",
+  "doctor_number": "+919876543210",
+  "family_numbers": ["+919812345678"]
 }
 ```
 

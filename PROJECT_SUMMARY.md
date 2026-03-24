@@ -99,9 +99,9 @@ maa-saathi-backend/
 
 ### 4. Emergency Alert System
 - Severity-based actions:
-  - LOW: SMS notification
-  - MEDIUM: SMS + event logging
-  - HIGH: SMS + emergency call + high priority
+  - LOW: SMS only
+  - MEDIUM: SMS + emergency call
+  - HIGH: SMS + emergency call
 - Stores alerts with location data
 - Alert status management (active/resolved)
 

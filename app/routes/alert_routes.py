@@ -12,9 +12,9 @@ async def create_sos_alert(sos_request: SOSRequest):
     - Accepts alert with type, severity, and location
     - Stores in Firestore
     - Triggers severity-based actions:
-      - LOW: SMS
-      - MEDIUM: SMS + logging
-      - HIGH: SMS + emergency call
+      - LOW: SMS only
+      - MEDIUM/HIGH: SMS + emergency call
+    - Include doctorNumber/familyNumbers for real Twilio delivery
     """
     return await alert_controller.create_sos_alert(sos_request)
 

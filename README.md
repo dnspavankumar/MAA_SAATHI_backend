@@ -35,6 +35,14 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
+Add Twilio values in `.env` to enable call/SMS features:
+
+```env
+TWILIO_ACCOUNT_SID=...
+TWILIO_AUTH_TOKEN=...
+TWILIO_PHONE_NUMBER=+1XXXXXXXXXX
+```
+
 4. Run the server:
 ```bash
 uvicorn app.main:app --reload
@@ -55,6 +63,9 @@ Interactive docs: http://localhost:8000/docs
 - `POST /api/v1/emergency/sos` - Create emergency alert
 - `GET /api/v1/alerts/{patientId}` - Get patient alerts
 - `PATCH /api/v1/alerts/{alertId}` - Update alert status
+- `POST /sms` and `POST /api/v1/communication/sms` - Send SMS
+- `POST /call` and `POST /api/v1/communication/call` - Make voice calls
+- `POST /sos` and `POST /api/v1/communication/sos` - Priority-based SOS notify
 - `GET /health` - Health check
 
 ## Project Structure

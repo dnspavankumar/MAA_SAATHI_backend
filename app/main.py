@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import iot_routes, health_routes, alert_routes
+from app.routes import iot_routes, health_routes, alert_routes, communication_routes
 from app.config.firebase import initialize_firebase
 from app.utils.logger import logger
 
@@ -38,3 +38,4 @@ async def health_check():
 app.include_router(iot_routes.router)
 app.include_router(health_routes.router)
 app.include_router(alert_routes.router)
+app.include_router(communication_routes.router)

@@ -14,8 +14,12 @@ class AlertController:
                 "patientId": sos_request.patientId,
                 "type": sos_request.type,
                 "severity": sos_request.severity,
-                "location": sos_request.location.model_dump()
+                "location": sos_request.location.model_dump(),
+                "doctorNumber": sos_request.doctorNumber,
+                "familyNumbers": sos_request.familyNumbers,
             }
+            if sos_request.customMessage:
+                alert_data["customMessage"] = sos_request.customMessage
             
             # Store alert in Firestore
             alert_id = await firestore_service.store_alert(
@@ -28,7 +32,13 @@ class AlertController:
                 severity=sos_request.severity,
                 patient_id=sos_request.patientId,
                 alert_type=sos_request.type,
-                location=alert_data["location"]
+                location=alert_data["location"],
+                doctor_number=sos_request.doctorNumber,
+                family_numbers=sos_request.familyNumbers,
+                custom_message=sos_request.customMessage,
+                sound_url=str(sos_request.soundUrl) if sos_request.soundUrl else None,
+                voice=sos_request.voice,
+                language=sos_request.language,
             )
             
             logger.info(f"SOS alert {alert_id} created for patient {sos_request.patientId}")
